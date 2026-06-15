@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 19:05:39 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/12 23:50:42 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/15 20:13:19 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void Rpn::parseInput(std::string input){
     if (input.find_first_not_of("0123456789-+/* ") != std::string::npos)
         throw(InvalidArg());
     while(getline(inputStream, num, ' ')){
-        tmp.push(num);
+        if (num != "")
+            tmp.push(num);
     }
     for(std::stack<std::string> dump = tmp; !dump.empty(); dump.pop()){
         _operand.push(dump.top());
@@ -52,42 +53,72 @@ void Rpn::parseInput(std::string input){
 void Rpn::calculate(std::string input){
     std::string allOps[4] = {"+", "-", "/", "*"};
     int res;
-    // std::string ops[2];
-    int value;
     int i;
+    std::string tmp;
     
     try {
         parseInput(input);
         if (isInt(_operand.top())){
             res = atoi(_operand.top().c_str());
             _operand.pop();
+            // if (_operand.empty())
+            //     throw(InvalidArg());
         }
+        else
+            throw(InvalidArg());
         while(!_operand.empty()){
+            int value = 11;
+            tmp = _operand.top();
             if (isInt(_operand.top())){
                 value = atoi(_operand.top().c_str());
                 _operand.pop();
             }
+            if (_operand.empty())
+                throw(InvalidArg());
             for (i = 0; i < 4; i++)
-                if (allOps[i] == _operand.top())
+                if (!_operand.empty() && allOps[i] == _operand.top())
                     break;
+            _operand.pop();
+            if (!_operand.empty() && _operand.top().find_first_not_of("+-*/")){
+                throw (InvalidArg());
+            }
             switch(i){
                 case 0:
-                    res += value;
+                    if (value != 11){
+                        res += value;
+                        break;
+                    }
+                    else
+                        throw(InvalidArg());
                     break;
                 case 1:
-                    res -= value;
+                    if (value != 11){
+                        res -= value;
+                        break;
+                    }
+                    else
+                        throw(InvalidArg());
                     break;
                 case 2:
-                    res /= value;
+                    if (value != 11 && value > 0){
+                        res /= value;
+                        break;
+                    }
+                    else
+                        throw(InvalidArg());
                     break;
                 case 3:
-                    res *= value;
+                    if (value != 11){
+                        res *= value;
+                        break;
+                    }
+                    else
+                        throw(InvalidArg());
                     break;
                 default:
                     throw(InvalidArg());
                     break;
             }
-            _operand.pop();
         }   
     }
     catch(std::exception& e){

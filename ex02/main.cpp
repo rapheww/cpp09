@@ -5,21 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 19:05:27 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/15 19:29:44 by rchaumei         ###   ########.fr       */
+/*   Created: 2026/06/15 20:23:56 by rchaumei          #+#    #+#             */
+/*   Updated: 2026/06/15 22:17:57 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RPN.hpp"
+#include <iostream>
 
 int main(int ac, char **av){
-    if (ac != 2){
-        std::cout<<"program takes 1 argument"<<std::endl; return 0;
+    if (ac < 2){
+        std::cout<<"Program need at least 1 param"<<std::endl; return 0;
     }
-    Rpn test;
-    if (av[1][0] == '\0'){
-        std::cout<<"Error\n"; return 0;
-    }
-    test.calculate(av[1]);
-    return 0;
+    std::cout<<"Unsorted (size : "<<ac - 1<<") :";
+    for (int i = 0; i < ac; i++)
+        std::cout<<" "<<av[i];
+    std::cout<<std::endl;
 }

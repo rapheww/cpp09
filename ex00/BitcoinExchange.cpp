@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 23:19:33 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/11 23:31:46 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/12 19:14:56 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,19 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& src){
 BitcoinExchange::~BitcoinExchange(){}
 
 const char* BitcoinExchange::BadInputDate::what() const throw(){
-    return "Error : Bad input";
+    return "Error: bad input => ";
 }
 
 const char* BitcoinExchange::BadInputValue::what() const throw(){
     return "Error : Bad input value needed";
+}
+
+const char* BitcoinExchange::NegativeValue::what() const throw(){
+    return "Error: not a positive number.";
+}
+
+const char* BitcoinExchange::Overflow::what() const throw(){
+    return "Error: too large a number.";
 }
 
 const char* BitcoinExchange::BadValue::what() const throw(){
@@ -43,15 +51,10 @@ size_t BitcoinExchange::getDataSize(){
 double convertToDouble(std::string amount){
     double converted;
     char *end;
-    //parsing potentiel a faire
     if (amount.empty())
         return 0;
     converted = strtod(amount.c_str(), &end);
     return converted;
-}
-
-void BitcoinExchange::setInput(std::string* input){
-    this->_input = input;
 }
 
 bool isLeap(int year)
@@ -116,15 +119,17 @@ void BitcoinExchange::checkDate(std::string date, char format){
 void BitcoinExchange::checkValue(std::string value){
     float fvalue;
     char* end;
-    if (value.size() > 6)
+    if (value.find('.') != std::string::npos && (value.find('.') > 4 || value.find('.') == value.size() - 1))
             throw(BadValue());
     fvalue = std::strtof(value.c_str(), &end);
     if (end == value.c_str())
         throw(BadValue());
     if (*end != '\0')
         throw(BadValue());
-    if (fvalue < 1 || fvalue > 1000)
-        throw(BadValue());
+    if (fvalue < 1)
+        throw(NegativeValue());
+    if (fvalue > 1000)
+        throw(Overflow());
 }
 
 void BitcoinExchange::exchange(std::string* line){
@@ -139,12 +144,21 @@ void BitcoinExchange::exchange(std::string* line){
             itDate--;
         if (itDate != _data.begin() && itDate->first != line[DATE])
             itDate--;
-        std::cout<<"nearest date is "<<itDate->first<<std::endl;
+        std::cout<<line[DATE]<<" => "<<line[VALUE]<<" = "<<std::strtof(line[VALUE].c_str(), NULL) * itDate->second<<std::endl;
     }
     catch(BadInputDate& e){
         std::cout<<e.what()<<" "<<line[DATE]<<std::endl;
     }
     catch(BadInputValue& e){
+        std::cout<<e.what()<<std::endl;
+    }
+    catch(BadValue& e){
+        std::cout<<e.what()<<std::endl;
+    }
+    catch(Overflow& e){
+        std::cout<<e.what()<<std::endl;
+    }
+    catch(NegativeValue& e){
         std::cout<<e.what()<<std::endl;
     }
     
@@ -173,7 +187,4 @@ void BitcoinExchange::parseData(){
     }
     infile.close();
     _data = res;
-    // for (std::multimap<std::string, double>::iterator itStart = _data.begin(); itStart != _data.end(); itStart++){
-    //     std::cout<<itStart->first<<","<<itStart->second<<std::endl;
-    // }
 }

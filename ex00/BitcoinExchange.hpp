@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 23:19:52 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/11 23:17:25 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/12 19:14:39 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,23 @@ class BitcoinExchange{
             public:
                 const char* what() const throw();
         };
-        class BadValue : std::exception{
+        class Overflow: std::exception{
+            public:
+                const char* what() const throw();
+        };
+        class NegativeValue: std::exception{
+            public:
+                const char* what() const throw();
+        };
+        class BadValue: std::exception{
             public:
                 const char* what() const throw();
         };
         void checkDate(std::string date, char format);
         void checkValue(std::string value);
-        void setInput(std::string* input);
         void parseData();
         void exchange(std::string* line);
         size_t getDataSize();
     private:
         std::multimap<std::string, double> _data;
-        std::string* _input;
 };
