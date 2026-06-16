@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 23:19:52 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/12 19:14:39 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/16 22:23:33 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 # define DATE 0
 # define VALUE 1
-# define MINYEAR 2009
 
 class BitcoinExchange{
     public:

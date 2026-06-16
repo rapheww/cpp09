@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 23:19:33 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/12 19:14:56 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/16 22:24:42 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void BitcoinExchange::checkDate(std::string date, char format){
     int intMonth = atoi(month.c_str());
     int intDay = atoi(day.c_str());
     
-    if (intYear < MINYEAR)
+    if (date < "2009-01-02")
         throw(BadInputDate());
     if (intMonth < 1 || intMonth > 12)
         throw(BadInputDate());
@@ -126,7 +126,7 @@ void BitcoinExchange::checkValue(std::string value){
         throw(BadValue());
     if (*end != '\0')
         throw(BadValue());
-    if (fvalue < 1)
+    if (fvalue < 0)
         throw(NegativeValue());
     if (fvalue > 1000)
         throw(Overflow());
