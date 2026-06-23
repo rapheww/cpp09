@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 20:23:56 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/16 23:25:53 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/24 00:27:42 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,30 @@ int *makeArray(char **av, size_t arraySize){
     return array;
 }
 
+void printTime(std::clock_t time, std::string containerType, size_t containerSize){
+    double inMs = static_cast<double>(CLOCKS_PER_SEC) / 1000;
+    double finalTime = time / inMs;
+
+    std::cout<<"Time to process a range of "<<containerSize<<" with std::["<<containerType<<"] : "<< std::fixed <<std::setprecision(6)<<finalTime<<" ms"<<std::endl;
+}
+
 void tryPmerge(int* array, size_t arraySize){
-    std::cout<<BOLD"Unsorted (size : "<<arraySize - 1<<") :" RESET;
-    for (size_t i = 0; i < arraySize; i++)
-        std::cout<<" [ "<<array[i]<<" ]";
-    std::cout<<std::endl;
+    //vector
     Pmerge testvector(array, arraySize, VECTOR);
+    testvector.printSorted(UNSORTED);
+    std::clock_t vectorTime = testvector.sort();
+    testvector.printSorted(SORTED);
+
+    //list
     Pmerge testlist(array, arraySize, LIST);
-    testvector.sort();
-    // testvector.printSorted();
-    (void)testlist;
+    testlist.printSorted(UNSORTED);
+    std::clock_t listTime = testlist.sort();
+    testlist.printSorted(SORTED);
+
+    //time
+    std::cout<<"---Time to sort ---\n";
+    printTime(vectorTime, "vector", arraySize);
+    printTime(listTime, "list", arraySize);
 }
 
 int main(int ac, char **av){

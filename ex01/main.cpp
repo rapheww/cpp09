@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 19:05:27 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/15 19:29:44 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/22 20:02:10 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int main(int ac, char **av){
     if (av[1][0] == '\0'){
         std::cout<<"Error\n"; return 0;
     }
-    test.calculate(av[1]);
+    try{
+        std::cout<<test.calculate(av[1])<<std::endl;
+    }
+    catch(const std::exception& e){
+        std::cout<<e.what()<<std::endl;
+    }
     return 0;
 }
