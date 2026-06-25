@@ -6,7 +6,7 @@
 /*   By: rchaumei <rchaumei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 20:24:33 by rchaumei          #+#    #+#             */
-/*   Updated: 2026/06/23 23:40:39 by rchaumei         ###   ########.fr       */
+/*   Updated: 2026/06/25 22:08:17 by rchaumei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,20 @@ class Pmerge{
         std::vector<int> _vsorted;
         std::vector<int> _vunsorted;
 
-        std::vector<int> presortVector(std::vector<int>& container);
+        std::vector<int> sortVector(std::vector<int>& container);
+        std::list<int> sortList(std::list<int>& container);
+        std::list<int>::iterator insertion(int target, std::list<int>::iterator low, std::list<int>::iterator high);
         size_t insertion(std::vector<int>& sorted, int target, size_t low, size_t high);
         bool checksorted();
         // list
+        template <typename T>
+        T next(T it, size_t value){
+            while(value > 0){
+                it++;
+                value--;
+            }
+            return it;
+        }
         std::list<int> _lsorted;
         std::list<int> _lunsorted;
 };
